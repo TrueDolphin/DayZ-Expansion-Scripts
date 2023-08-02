@@ -15,7 +15,7 @@
  **/
 class ExpansionAISettings: ExpansionSettingBase
 {
-	static const int VERSION = 6;
+	static const int VERSION = 7;
 
 	float AccuracyMin;
 	float AccuracyMax;
@@ -33,6 +33,10 @@ class ExpansionAISettings: ExpansionSettingBase
 	bool Manners;
 
 	bool CanRecruitGuards;
+	
+	bool CanRecruitFriendly;
+
+	autoptr TStringArray PreventClimb
 
 #ifdef DIAG
 	float FormationScale;
@@ -89,6 +93,12 @@ class ExpansionAISettings: ExpansionSettingBase
 			return false;
 		}
 
+		if ( !ctx.Read( CanRecruitFriendly ) )
+		{
+			Error("ExpansionAISettings::OnRecieve CanRecruitFriendly");
+			return false;
+		}
+
 #ifdef DIAG
 		if ( !ctx.Read( FormationScale ) )
 		{
@@ -124,6 +134,7 @@ class ExpansionAISettings: ExpansionSettingBase
 		ctx.Write( Vaulting );
 		ctx.Write( Manners );
 		ctx.Write( CanRecruitGuards );
+		ctx.Write( CanRecruitFriendly );
 
 #ifdef DIAG
 		ctx.Write( FormationScale );
@@ -177,7 +188,7 @@ class ExpansionAISettings: ExpansionSettingBase
 		MaximumDynamicPatrols = s.MaximumDynamicPatrols;
 		Vaulting = s.Vaulting;
 		Manners = s.Manners;
-
+		PreventClimb.Copy(s.PreventClimb);
 #ifdef DIAG
 		FormationScale = s.FormationScale;
 #endif
@@ -257,6 +268,11 @@ class ExpansionAISettings: ExpansionSettingBase
 					DamageMultiplier = settingsDefault.DamageMultiplier;
 				}
 
+				if (m_Version < 6)
+				{
+					PreventClimb = settingsDefault.PreventClimb;
+				}
+
 				m_Version = VERSION;
 				save = true;
 			}
@@ -315,6 +331,7 @@ class ExpansionAISettings: ExpansionSettingBase
 		Vaulting = true;
 		SniperProneDistanceThreshold = 0.0;
 		Manners = false;
+		PreventClimb = {"Land_House", "Land_Mil_Airfield_HQ"};
 
 #ifdef DIAG
 		FormationScale = 0.15;

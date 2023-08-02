@@ -49,6 +49,9 @@ class ExpansionActionRecruitAI: ActionInteractBase
 		if ((!tAI.GetGroup().GetFaction().IsGuard() && tAI.PlayerIsEnemy(player)) || (tAI.GetGroup().GetFaction().IsGuard() && !GetExpansionSettings().GetAI().CanRecruitGuards))
 			return false;
 
+		if (!tAI.PlayerIsEnemy(player) && !GetExpansionSettings().GetAI().CanRecruitFriendly)
+			return false;
+
 		return true;
 	}
 	

@@ -1,7 +1,7 @@
 [eAIRegisterDynamicPatrolSpawner(BuildingBase)]
 modded class BuildingBase
 {
-	static autoptr TStringArray s_eAI_PreventClimb = {"Land_House", "Land_Mil_Airfield_HQ"};
+	static autoptr TStringArray s_eAI_PreventClimb = GetExpansionSettings().GetAI().PreventClimb;
 
 	ref eAIDynamicPatrolSpawner<BuildingBase> m_eAI_DynamicPatrolSpawner;
 	ref map<int, int> m_eAI_LastDoorInteractionTime = new map<int, int>;
